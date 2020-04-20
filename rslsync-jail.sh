@@ -22,15 +22,15 @@ INTERFACE="vnet0"
 VNET="on"
 RELEASE="11.3-RELEASE"
 JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
-
 POOL_PATH=""
+CONFIG_PATH=""
+DATA_PATH=""
+
 TIME_ZONE=""
 HOST_NAME=""
 DATABASE="mariadb"
 DB_PATH=""
-FILES_PATH=""
 PORTS_PATH=""
-CONFIG_PATH=""
 DL_FLAGS=""
 DNS_SETTING=""
 
@@ -58,6 +58,31 @@ if [ -z "${JAIL_IP}" ]; then
 fi
 if [ -z "${DEFAULT_GW_IP}" ]; then
   echo 'Configuration error: DEFAULT_GW_IP must be set'
+  exit 1
+fi
+if [ -z "${POOL_PATH}" ]; then
+  echo 'Configuration error: POOL_PATH must be set'
+  exit 1
+fi
+
+# If DATA_PATH and CONFIG_PATH weren't set in rslsync-config, set them
+if [ -z "${DATA_PATH}" ]; then
+  DATA_PATH="${POOL_PATH}"/rslsync/data
+fi
+if [ -z "${CONFIG_PATH}" ]; then
+  CONFIG_PATH="${POOL_PATH}"/rslsync/config
+fi
+
+# Sanity check DATA_PATH and CONFIG_PATH -- they have to be different and can't be the same as POOL_PATH
+if [ "${CONFIG_PATH}" = "${DATA_PATH}" ]
+then
+  echo "CONFIG_PATH and DATA_PATH must be different!"
+  exit 1
+fi
+
+if [ "${DATA_PATH}" = "${POOL_PATH}" ] || [ "${CONFIG_PATH}" = "${POOL_PATH}" ]
+then
+  echo "FILES_PATH and CONFIG_PATH must all be different from POOL_PATH!"
   exit 1
 fi
 
