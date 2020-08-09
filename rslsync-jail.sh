@@ -168,9 +168,9 @@ iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync /usr/local/etc/rc.d/
 iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync.conf.sample /usr/local/etc/
 iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync.conf.sample /usr/local/etc/rslsync.conf
 
-#iocage exec "${JAIL_NAME}" sysrc rslsync_enable="YES"
+iocage exec "${JAIL_NAME}" sysrc rslsync_enable="YES"
 
-#iocage restart "${JAIL_NAME}"
+iocage restart "${JAIL_NAME}"
 
 # Don't need /mnt/includes any more, so unmount it
 iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" /tmp/includes nullfs rw 0 0
