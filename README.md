@@ -5,13 +5,7 @@ This is a simple script to automate the installation of Resilio Sync in a FreeNA
 This script will work with FreeNAS 11.3, and it should also work with TrueNAS CORE 12.0. Due to the EOL status of FreeBSD 11.2, it is unlikely to work reliably with earlier releases of FreeNAS.
 
 ## Usage
-Users often have a requirement to do a selective backup of data from their mobile and notebook devices over the internet. Resilio Sync on FreeNAS addresses many of the concerns of cloud based file synchronisation services relating to file storage limits, privacy, cost and performance.
-
-Examples of use include:
-1. Backup of photos and videos from Android (4 or later) and iOS (8 or later) smartphones and tablets.
-2. Backup of local folders such as Documents, Music, Pictures and Video on Linux, OS X (10.8 or later) and Windows (7 or later) laptops and desktops.
-
-Resilio Sync is a cross-platform P2P file syncronisation tool that encrypts files during file transfer. The only file transfer requirement is local network or internet connectivity.
+Users wil use cloud-based services such as Google Drive, Microsoft OneDrive, Apple iCloud amd DropBox to name a few, to do a selective backup of data from their mobile and notebook devices over the internet. The appeal of Resilio Sync on FreeNAS is that it addresses many of the concerns of cloud based file synchronisation services relating to file storage limits, photo and video compression, privacy, cost and performance.
 
 ### Prerequisites
 
@@ -49,10 +43,14 @@ Once you've downloaded the script and prepared the configuration file, run this 
 
 To test your installation, enter your Resilio Sync jail IP address and port 8888 e.g. `10.1.1.3:8888` in a browser. If the installation was successful, you should see the Resilio Sync welcome screen.
 
+### Initial Configuration
+
+$DATA_PATH is mounted inside the jail at `/media`.  Your backups go there. Before using the application, point the Default folder location and File download location to /media in Preferences.
+
 ## Support and Discussion
 
-Questions or issues about this resource can be raised in [this forum thread](https://www.ixsystems.com/community/threads/reverse-proxy-using-caddy-with-optional-automatic-tls.75978/).  Be aware that any Caddyfile examples in that thread prior to August 2020 will be incorrect, as Caddy v1 used a significantly different Caddyfile syntax.
+Useful sources of support include the [Sync Help Centre](https://help.resilio.com/hc/en-us/categories/200140177-Get-started-with-Sync) and [Sync Forum](https://forum.resilio.com/)
 
-Though we'll try to help on that thread, once Caddy's up and running, the [Caddy forum](https://caddy.community/) is likely to be a better resource for its configuration, particularly with applications whose reverse proxy settings prove to be difficult.  Once you have something working, though, please post back in the iXSystems forum.
+Questions or issues about this resource can be raised in [this forum thread](https://www.ixsystems.com/community/threads/reverse-proxy-using-caddy-with-optional-automatic-tls.75978/).  
 
 
