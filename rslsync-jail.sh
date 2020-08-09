@@ -26,6 +26,8 @@ CONFIG_NAME="rslsync-config"
 CONFIG_PATH=""
 DATA_PATH=""
 
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "${SCRIPT}")
 if ! [ -e "${SCRIPTPATH}"/"${CONFIG_NAME}" ]; then
   echo "${SCRIPTPATH}/${CONFIG_NAME} must exist."
   exit 1
