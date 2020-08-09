@@ -70,10 +70,10 @@ fi
 
 # If DATA_PATH and CONFIG_PATH weren't set in rslsync-config, set them
 if [ -z "${DATA_PATH}" ]; then
-  DATA_PATH="${POOL_PATH}"/rslsync/data
+  DATA_PATH="${POOL_PATH}"/apps/rslsync/data
 fi
 if [ -z "${CONFIG_PATH}" ]; then
-  CONFIG_PATH="${POOL_PATH}"/rslsync/config
+  CONFIG_PATH="${POOL_PATH}"/apps/rslsync/config
 fi
 
 # Sanity check DATA_PATH and CONFIG_PATH -- they have to be different and can't be the same as POOL_PATH
@@ -86,15 +86,6 @@ if [ "${DATA_PATH}" = "${POOL_PATH}" ] || [ "${CONFIG_PATH}" = "${POOL_PATH}" ]
 then
   echo "FILES_PATH and CONFIG_PATH must all be different from POOL_PATH!"
   exit 1
-fi
-
-# If CONFIG_PATH wasn't set in nextcloud-config, set it
-if [ -z "${CONFIG_PATH}" ]; then
-  CONFIG_PATH="${POOL_PATH}"/apps/rslsync/config
-fi
-# If DATA_PATH wasn't set in nextcloud-config, set it
-if [ -z "${DATA_PATH}" ]; then
-  DATA_PATH="${POOL_PATH}"/apps/rslsync/data
 fi
 
 # Extract IP and netmask, sanity check netmask
