@@ -51,6 +51,6 @@ To test your installation, enter your Resilio Sync jail IP address and port 8888
 
 Useful sources of support include the [Sync Help Centre](https://help.resilio.com/hc/en-us/categories/200140177-Get-started-with-Sync) and [Sync Forum](https://forum.resilio.com/)
 
-Questions or issues about this resource can be raised in [this forum thread](https://www.ixsystems.com/community/threads/reverse-proxy-using-caddy-with-optional-automatic-tls.75978/).  
+Questions or issues about this resource can be raised in [this forum thread](https://www.ixsystems.com/community/threads/scripted-resilio-sync-installation.86766/).  
 
 
