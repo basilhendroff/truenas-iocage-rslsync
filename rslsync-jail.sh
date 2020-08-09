@@ -137,6 +137,8 @@ iocage exec "${JAIL_NAME}" mkdir -p /var/db/rslsync
 iocage exec "${JAIL_NAME}" mkdir -p /usr/local/etc/rc.d
 iocage exec "${JAIL_NAME}" mkdir -p /usr/local/bin
 
+iocage exec "${JAIL_NAME}" pw user add rslsync -c rslsync -u 817 -d /nonexistent -s /usr/bin/nologin
+iocage exec "${JAIL_NAME}" chown -R rslsync:rslsync /var/db/rslsync /media
 
 iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /tmp/includes nullfs rw 0 0
 iocage fstab -a "${JAIL_NAME}" "${CONFIG_PATH}" /var/db/rslsync nullfs rw 0 0
@@ -144,16 +146,22 @@ iocage fstab -a "${JAIL_NAME}" "${DATA_PATH}" /media nullfs rw 0 0
 
 #####
 #
-# Rslsync Download  and Setup
+# Rslsync Download and Setup
 #
 #####
 
 FILE="resilio-sync_freebsd_x64.tar.gz"
-if ! iocage exec "${JAIL_NAME}" fetch -o /tmp fetch https://download-cdn.resilio.com/stable/FreeBSD-x64/"${FILE}" https://download-cdn.resilio.com/stable/FreeBSD-x64/"${FILE}".asc
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp fetch https://download-cdn.resilio.com/stable/FreeBSD-x64/"${FILE}"
 then
-	echo "Failed to download Nextcloud"
+	echo "Failed to download Resilio/Sync"
 	exit 1
 fi
+if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/bin/
+then
+	echo "Failed to extract Resilio/Sync"
+	exit 1
+fi
+iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
 # Copy pre-written config files
 iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync /usr/local/etc/rc.d/
