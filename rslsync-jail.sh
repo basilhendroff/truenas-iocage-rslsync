@@ -138,7 +138,17 @@ iocage exec "${JAIL_NAME}" mkdir -p /usr/local/etc/rc.d
 
 iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /tmp/includes nullfs rw 0 0
 iocage fstab -a "${JAIL_NAME}" "${CONFIG_PATH}" /var/db/rslsync nullfs rw 0 0
-iocage fstab -a "${JAIL_NAME}" "${CONFIG_PATH}" /media nullfs rw 0 0
+iocage fstab -a "${JAIL_NAME}" "${DATA_PATH}" /media nullfs rw 0 0
+
+# Copy pre-written config files
+iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync /usr/local/etc/rc.d/
+iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync.conf.sample /usr/local/etc/
+iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync.conf.sample /usr/local/etc/rslsync.conf
+
+iocage exec "${JAIL_NAME}" sysrc rslsync_enable="YES"
+
+
+
 
 
 
