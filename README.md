@@ -41,7 +41,7 @@ Once you've downloaded the script and prepared the configuration file, run this 
 
 ### Test
 
-To test your installation, enter your Resilio Sync jail IP address and port 8888 e.g. `10.1.1.3:8888` in a browser. If the installation was successful, you should see the Resilio Sync login screen.
+To test your installation, enter your Resilio Sync jail IP address and port 8888 e.g. `10.1.1.3:8888` in a browser. If the installation was successful, you should see the Resilio Sync welcome screen.
 
 ### Initial Configuration
 
