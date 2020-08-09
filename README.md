@@ -5,7 +5,7 @@ This is a simple script to automate the installation of Resilio Sync in a FreeNA
 This script will work with FreeNAS 11.3, and it should also work with TrueNAS CORE 12.0. Due to the EOL status of FreeBSD 11.2, it is unlikely to work reliably with earlier releases of FreeNAS.
 
 ## Usage
-Users wil use cloud-based services such as Google Drive, Microsoft OneDrive, Apple iCloud amd DropBox to name a few, to do a selective backup of data from their mobile and notebook devices over the internet. The appeal of Resilio Sync on FreeNAS is that it addresses many of the concerns of cloud based file synchronisation services relating to file storage limits, photo and video compression, privacy, cost and performance.
+Users often use cloud-based services such as Google Drive, Microsoft OneDrive, Apple iCloud and DropBox to name a few, to do selective backups of data from their mobile and notebook devices over the internet. The appeal of Resilio Sync on FreeNAS is that it addresses many of the concerns of cloud based file synchronisation services relating to file storage limits, photo and video compression, privacy, cost and performance.
 
 ### Prerequisites
 
@@ -30,8 +30,8 @@ Many of the options are self-explanatory, and all should be adjusted to suit you
 In addition, there are some other options which have sensible defaults, but can be adjusted if needed. These are:
 
 - JAIL_NAME: The name of the jail, defaults to "rslsync"
-- CONFIG_PATH: Metadata for selective backups are stored in this path, defaults to $POOL_PATH/apps/rslsync/config.
-- DATA_PATH: Selective backups are stored in this path, defaults to $POOL_PATH/apps/rslsync/data
+- CONFIG_PATH: Metadata for selective backups is stored in this path; defaults to $POOL_PATH/apps/rslsync/config.
+- DATA_PATH: Selective backups are stored in this path; defaults to $POOL_PATH/apps/rslsync/data
 - INTERFACE: The network interface to use for the jail. Defaults to `vnet0`.
 - VNET: Whether to use the iocage virtual network stack. Defaults to `on`.
 
@@ -41,11 +41,11 @@ Once you've downloaded the script and prepared the configuration file, run this 
 
 ### Test
 
-To test your installation, enter your Resilio Sync jail IP address and port 8888 e.g. `10.1.1.3:8888` in a browser. If the installation was successful, you should see the Resilio Sync welcome screen.
+To test your installation, enter your Resilio Sync jail IP address and port 8888 e.g. `10.1.1.3:8888` in a browser. If the installation was successful, you should see the Resilio Sync login screen.
 
 ### Initial Configuration
 
-$DATA_PATH is mounted inside the jail at `/media`.  Your backups go there. Before using the application, point the Default folder location and File download location to /media in Preferences.
+$DATA_PATH is mounted inside the jail at `/media`. Your backups go there. Before using the application, point the `Default folder location` and `File download location` to /media in Preferences.
 
 ## Support and Discussion
 
