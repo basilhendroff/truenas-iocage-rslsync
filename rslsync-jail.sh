@@ -135,17 +135,37 @@ mkdir -p "${DATA_PATH}"
 iocage exec "${JAIL_NAME}" mkdir -p /tmp/includes
 iocage exec "${JAIL_NAME}" mkdir -p /var/db/rslsync
 iocage exec "${JAIL_NAME}" mkdir -p /usr/local/etc/rc.d
+iocage exec "${JAIL_NAME}" mkdir -p /usr/local/bin
+
 
 iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /tmp/includes nullfs rw 0 0
 iocage fstab -a "${JAIL_NAME}" "${CONFIG_PATH}" /var/db/rslsync nullfs rw 0 0
 iocage fstab -a "${JAIL_NAME}" "${DATA_PATH}" /media nullfs rw 0 0
+
+#####
+#
+# Rslsync Download  and Setup
+#
+#####
+
+FILE="resilio-sync_freebsd_x64.tar.gz"
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp fetch https://download-cdn.resilio.com/stable/FreeBSD-x64/"${FILE}" https://download-cdn.resilio.com/stable/FreeBSD-x64/"${FILE}".asc
+then
+	echo "Failed to download Nextcloud"
+	exit 1
+fi
 
 # Copy pre-written config files
 iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync /usr/local/etc/rc.d/
 iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync.conf.sample /usr/local/etc/
 iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync.conf.sample /usr/local/etc/rslsync.conf
 
-iocage exec "${JAIL_NAME}" sysrc rslsync_enable="YES"
+#iocage exec "${JAIL_NAME}" sysrc rslsync_enable="YES"
+
+#iocage restart "${JAIL_NAME}"
+
+# Don't need /mnt/includes any more, so unmount it
+iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 
 
 
