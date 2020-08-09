@@ -130,3 +130,23 @@ then
 	exit 1
 fi
 rm /tmp/pkg.json
+
+#####
+#
+# Directory Creation and Mounting
+#
+#####
+
+mkdir -p "${CONFIG_PATH}"
+mkdir -p "${DATA_PATH}"
+
+iocage exec "${JAIL_NAME}" mkdir -p /tmp/includes
+iocage exec "${JAIL_NAME}" mkdir -p /var/db/rslsync
+iocage exec "${JAIL_NAME}" mkdir -p /usr/local/etc/rc.d
+
+iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /tmp/includes nullfs rw 0 0
+iocage fstab -a "${JAIL_NAME}" "${CONFIG_PATH}" /var/db/rslsync nullfs rw 0 0
+iocage fstab -a "${JAIL_NAME}" "${CONFIG_PATH}" /media nullfs rw 0 0
+
+
+
