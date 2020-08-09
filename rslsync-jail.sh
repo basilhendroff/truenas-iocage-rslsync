@@ -151,7 +151,7 @@ iocage fstab -a "${JAIL_NAME}" "${DATA_PATH}" /media nullfs rw 0 0
 #####
 
 FILE="resilio-sync_freebsd_x64.tar.gz"
-if ! iocage exec "${JAIL_NAME}" fetch -o /tmp fetch https://download-cdn.resilio.com/stable/FreeBSD-x64/"${FILE}"
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://download-cdn.resilio.com/stable/FreeBSD-x64/"${FILE}"
 then
 	echo "Failed to download Resilio/Sync"
 	exit 1
@@ -173,7 +173,8 @@ iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync.conf.sample /usr/local/etc/r
 #iocage restart "${JAIL_NAME}"
 
 # Don't need /mnt/includes any more, so unmount it
-iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
+iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" /tmp/includes nullfs rw 0 0
+iocage exec "${JAIL_NAME}" rmdir /tmp/includes
 
 
 
