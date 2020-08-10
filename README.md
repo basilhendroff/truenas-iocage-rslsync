@@ -9,7 +9,7 @@ Users often use cloud-based services such as Google Drive, Microsoft OneDrive, A
 
 ### Prerequisites
 
-Although not required, it's recommended to create a Dataset named `apps` with a sub-dataset named `rslsync` on your main storage pool.  Many other jail guides also store their configuration and data in subdirectories of `pool/apps/` If this dataset is not present, a directory `/apps/rslsync` will be created in `$POOL_PATH`.
+Although not required, it's recommended to create a Dataset named `apps` with a sub-dataset named `rslsync` on your main storage pool and nested sub-datasets `config` and `data`.  Many other jail guides also store their configuration and data in subdirectories of `pool/apps/` If these datasets are not present, directories `/apps/rslsync/config` and `/apps/rslsync/data` will be created in `$POOL_PATH`.
 
 ### Installation
 
