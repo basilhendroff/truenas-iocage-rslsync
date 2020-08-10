@@ -1,5 +1,5 @@
 # freenas-iocage-rslsync
-This is a simple script to automate the installation of Resilio Sync in a FreeNAS jail. It will create a jail, install the latest version of the Resilio Sync (x64) executable for FreeBSD from [resilio.com](https://www.resilio.com/individuals/), and store its configuration and client backup data outside the jail.  
+This is a simple script to automate the installation of Resilio Sync in a FreeNAS jail. It will create a jail, install the latest version of Resilio Sync (x64) for FreeBSD from [resilio.com](https://www.resilio.com/individuals/), and store its configuration and client backup data outside the jail.  
 
 ## Status
 This script will work with FreeNAS 11.3, and it should also work with TrueNAS CORE 12.0. Due to the EOL status of FreeBSD 11.2, it is unlikely to work reliably with earlier releases of FreeNAS.
