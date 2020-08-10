@@ -45,7 +45,7 @@ To test your installation, enter your Resilio Sync jail IP address and port 8888
 
 ### Initial Configuration
 
-`$DATA_PATH` is mounted inside the jail at `/media`. Your backups go there. Before using the application, point the `Default folder location` and `File download location` to `/media` in the preference settings.
+`$DATA_PATH` is mounted inside the jail at `/media`. Your backups go there. When configuring the application, point the `Default folder location` and `File download location` to `/media` in the preference settings.
 
 ## Support and Discussion
 
