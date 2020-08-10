@@ -30,7 +30,7 @@ Many of the options are self-explanatory, and all should be adjusted to suit you
 In addition, there are some other options which have sensible defaults, but can be adjusted if needed. These are:
 
 - JAIL_NAME: The name of the jail, defaults to `rslsync`
-- CONFIG_PATH: Metadata for selective backups is stored in this path; defaults to `$POOL_PATH/apps/rslsync/config`.
+- CONFIG_PATH: Client configuration data is stored in this path; defaults to `$POOL_PATH/apps/rslsync/config`.
 - DATA_PATH: Selective backups are stored in this path; defaults to `$POOL_PATH/apps/rslsync/data`.
 - INTERFACE: The network interface to use for the jail. Defaults to `vnet0`.
 - VNET: Whether to use the iocage virtual network stack. Defaults to `on`.
