@@ -29,7 +29,7 @@ Many of the options are self-explanatory, and all should be adjusted to suit you
 In addition, there are some other options which have sensible defaults, but can be adjusted if needed. These are:
 
 - JAIL_NAME: The name of the jail, defaults to `rslsync`.
-- POOL_PATH is the path for your data pool and is set automatically if left blank.
+- POOL_PATH: The path for your data pool. It is set automatically if left blank.
 - CONFIG_PATH: Client configuration data is stored in this path; defaults to `$POOL_PATH/apps/rslsync/config`.
 - DATA_PATH: Selective backups are stored in this path; defaults to `$POOL_PATH/apps/rslsync/data`.
 - INTERFACE: The network interface to use for the jail. Defaults to `vnet0`.
