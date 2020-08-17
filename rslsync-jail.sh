@@ -65,12 +65,12 @@ if [ -z "${DEFAULT_GW_IP}" ]; then
 fi
 if [ -z "${POOL_PATH}" ]; then
   POOL_PATH="/mnt/$(iocage get -p)"
+  echo 'POOL_PATH defaulting to '$POOL_PATH
 fi
 
 # If DATA_PATH and CONFIG_PATH weren't set in rslsync-config, set them
 if [ -z "${DATA_PATH}" ]; then
   DATA_PATH="${POOL_PATH}"/apps/rslsync/data
-  echo 'POOL_PATH defaulting to '$POOL_PATH
 fi
 if [ -z "${CONFIG_PATH}" ]; then
   CONFIG_PATH="${POOL_PATH}"/apps/rslsync/config
