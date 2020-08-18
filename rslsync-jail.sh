@@ -28,6 +28,8 @@ DATA_PATH=""
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "${SCRIPT}")
+
+# Check for rslsync-config and set configuration
 if ! [ -e "${SCRIPTPATH}"/"${CONFIG_NAME}" ]; then
   echo "${SCRIPTPATH}/${CONFIG_NAME} must exist."
   exit 1
@@ -37,12 +39,6 @@ INCLUDES_PATH="${SCRIPTPATH}"/includes
 
 JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
 RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
-
-# Check for rslsync-config and set configuration
-if ! [ -e "${SCRIPTPATH}"/rslsync-config ]; then
-  echo "${SCRIPTPATH}/rslsync-config must exist."
-  exit 1
-fi
 
 #####
 #
@@ -175,9 +171,3 @@ iocage restart "${JAIL_NAME}"
 # Don't need /mnt/includes any more, so unmount it
 iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" /tmp/includes nullfs rw 0 0
 iocage exec "${JAIL_NAME}" rmdir /tmp/includes
-
-
-
-
-
-
