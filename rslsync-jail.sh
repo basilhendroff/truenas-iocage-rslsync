@@ -80,7 +80,7 @@ then
 fi
 if [ "${DATA_PATH}" = "${POOL_PATH}" ] || [ "${CONFIG_PATH}" = "${POOL_PATH}" ]
 then
-  echo "FILES_PATH and CONFIG_PATH must all be different from POOL_PATH!"
+  echo "DATA_PATH and CONFIG_PATH must all be different from POOL_PATH!"
   exit 1
 fi
 
