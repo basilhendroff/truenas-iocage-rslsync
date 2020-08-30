@@ -46,7 +46,7 @@ RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
 #
 #####
 
-# Check that necessary variables were set by nextcloud-config
+# Check that necessary variables were set by rslsync-config
 if [ -z "${JAIL_IP}" ]; then
   echo 'Configuration error: JAIL_IP must be set'
   exit 1
