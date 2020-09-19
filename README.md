@@ -52,4 +52,6 @@ Useful sources of support include the [Sync Help Centre](https://help.resilio.co
 
 Questions or issues about this resource can be raised in [this forum thread](https://www.ixsystems.com/community/threads/scripted-resilio-sync-installation.86766/).  
 
+## Disclaimer
+It's your data. It's your responsibility. This resource is provided as a community service. Use it at your own risk.
 
