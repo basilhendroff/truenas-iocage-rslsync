@@ -25,6 +25,9 @@ JAIL_NAME="rslsync"
 CONFIG_NAME="rslsync-config"
 CONFIG_PATH=""
 DATA_PATH=""
+USER_NAME="${JAIL_NAME}"
+GROUP_NAME="${JAIL_NAME}"
+UID_GID=817
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "${SCRIPT}")
@@ -113,6 +116,7 @@ __EOF__
 
 # Create the jail and install previously listed packages
 if ! iocage create --name "${JAIL_NAME}" -p /tmp/pkg.json -r "${RELEASE}" interfaces="${JAIL_INTERFACES}" ip4_addr="${INTERFACE}|${JAIL_IP}/24" defaultrouter="${DEFAULT_GW_IP}" boot="on" host_hostname="${JAIL_NAME}" vnet="${VNET}"
+#if ! iocage create --name "${JAIL_NAME}" -p /tmp/pkg.json -r "${RELEASE}" boot="on" host_hostname="${JAIL_NAME}" dhcp="on"
 then
 	echo "Failed to create jail"
 	exit 1
@@ -129,15 +133,19 @@ mkdir -p "${CONFIG_PATH}"
 mkdir -p "${DATA_PATH}"
 chown -R 817:817 "${CONFIG_PATH}" "${DATA_PATH}"
 
-iocage exec "${JAIL_NAME}" mkdir -p /tmp/includes
-iocage exec "${JAIL_NAME}" mkdir -p /var/db/rslsync
-iocage exec "${JAIL_NAME}" mkdir -p /usr/local/etc/rc.d
-iocage exec "${JAIL_NAME}" mkdir -p /usr/local/bin
+JAIL_TMP_INCLUDE="/tmp/includes"
+JAIL_VAR_DB="/var/db/rslsync"
+USR_LOCAL="/usr/local"
 
-iocage exec "${JAIL_NAME}" "pw user add rslsync -c rslsync -u 817 -d /nonexistent -s /usr/bin/nologin"
+iocage exec "${JAIL_NAME}" mkdir -p "${JAIL_TMP_INCLUDE}" 
+iocage exec "${JAIL_NAME}" mkdir -p "${JAIL_VAR_DB}"
+iocage exec "${JAIL_NAME}" mkdir -p "${USR_LOCAL}/etc/rc.d"
+iocage exec "${JAIL_NAME}" mkdir -p "${USR_LOCAL}/bin"
 
-iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /tmp/includes nullfs rw 0 0
-iocage fstab -a "${JAIL_NAME}" "${CONFIG_PATH}" /var/db/rslsync nullfs rw 0 0
+iocage exec "${JAIL_NAME}" "pw user add ${USER_NAME} -c ${GROUP_NAME} -u ${UID_GID} -d /nonexistent -s /usr/bin/nologin"
+
+iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" "${JAIL_TMP_INCLUDE}" nullfs rw 0 0
+iocage fstab -a "${JAIL_NAME}" "${CONFIG_PATH}" "${JAIL_VAR_DB}" nullfs rw 0 0
 iocage fstab -a "${JAIL_NAME}" "${DATA_PATH}" /media nullfs rw 0 0
 
 #####
@@ -147,12 +155,13 @@ iocage fstab -a "${JAIL_NAME}" "${DATA_PATH}" /media nullfs rw 0 0
 #####
 
 FILE="resilio-sync_freebsd_x64.tar.gz"
-if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://download-cdn.resilio.com/stable/FreeBSD-x64/"${FILE}"
+RESILIO_CDN="https://download-cdn.resilio.com/stable/FreeBSD-x64"
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp "${RESILIO_CDN}/${FILE}"
 then
 	echo "Failed to download Resilio/Sync"
 	exit 1
 fi
-if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/bin/
+if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C "${USR_LOCAL}/bin/"
 then
 	echo "Failed to extract Resilio/Sync"
 	exit 1
@@ -160,14 +169,14 @@ fi
 iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
 # Copy pre-written config files
-iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync /usr/local/etc/rc.d/
-iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync.conf.sample /usr/local/etc/
-iocage exec "${JAIL_NAME}" cp /tmp/includes/rslsync.conf.sample /usr/local/etc/rslsync.conf
+iocage exec "${JAIL_NAME}" cp "${JAIL_TMP_INCLUDE}/rslsync" "${USR_LOCAL}/etc/rc.d/"
+iocage exec "${JAIL_NAME}" cp "${JAIL_TMP_INCLUDE}/rslsync.conf.sample" "${USR_LOCAL}/etc/"
+iocage exec "${JAIL_NAME}" cp "${JAIL_TMP_INCLUDE}/rslsync.conf.sample" "${USR_LOCAL}/etc/rslsync.conf"
 
 iocage exec "${JAIL_NAME}" sysrc rslsync_enable="YES"
 
 iocage restart "${JAIL_NAME}"
 
 # Don't need /mnt/includes any more, so unmount it
-iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" /tmp/includes nullfs rw 0 0
-iocage exec "${JAIL_NAME}" rmdir /tmp/includes
+iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" "${JAIL_TMP_INCLUDE}" nullfs rw 0 0
+iocage exec "${JAIL_NAME}" rmdir "${JAIL_TMP_INCLUDE}"

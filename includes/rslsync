@@ -3,8 +3,8 @@
 # $FreeBSD: head/net-p2p/rslsync/files/rslsync.in 469847 2018-05-14 02:55:52Z knu $
 #
 # PROVIDE: rslsync
-# REQUIRE: LOGIN
-# KEYWORD: shutdown
+# REQUIRE: LOGIN,networking
+# KEYWORD: 
 #
 # Add the following lines to /etc/rc.conf.local or /etc/rc.conf
 # to enable this service:
@@ -21,23 +21,51 @@
 #                               will run as wheel.
 
 . /etc/rc.subr
+
 name="rslsync"
 rcvar="${name}_enable"
-load_rc_config ${name}
+command="/usr/local/bin/${name}"
+command_args="--config /usr/local/etc/${name}.conf"
+pidfile="/var/run/${name}/${name}.pid"
 
-: ${rslsync_enable:="NO"}
-: ${rslsync_user:="rslsync"}
-: ${rslsync_group:="rslsync"}
+start_cmd="daemon_start"
+stop_cmd="daemon_stop"
+status_cmd="daemon_status"
+start_precmd="daemon_prestart"
 
-pidfile="/var/run/rslsync/rslsync.pid"
-command="/usr/local/bin/rslsync"
-command_args="--config /usr/local/etc/rslsync.conf"
+: ${daemon_user:="${name}"}
+: ${daemon_group:="${name}"}
 
-start_precmd=rslsync_prestart
-rslsync_prestart() {
-        if [ ! -d ${pidfile%/*} ]; then
-                install -d -o ${rslsync_user} -g ${rslsync_group} ${pidfile%/*}
+daemon_prestart() {
+        if [ ! -d ${pidfile%/*} ]; 
+        then
+                install -d -o ${daemon_user} -g ${daemon_group} ${pidfile%/*}
         fi
 }
+
+daemon_start() {
+    /usr/sbin/daemon -P ${pidfile} -r -f -u $daemon_user $command
+}
+
+daemon_stop() {
+    if [ -e "${pidfile}" ]; 
+    then
+        kill -s TERM `cat ${pidfile}`
+    else
+        echo "${name} is not running"
+    fi
+}
+
+daemon_status() {
+    if [ -e "${pidfile}" ]; 
+    then
+        echo "${name} is running as pid `cat ${pidfile}`"
+    else
+        echo "${name} is not running"
+    fi
+}
+
+load_rc_config ${name}
+: ${rslsync_enable:="NO"}
 
 run_rc_command "$1"
