@@ -26,7 +26,9 @@ name="rslsync"
 rcvar="${name}_enable"
 command="/usr/local/bin/${name}"
 command_args="--config /usr/local/etc/${name}.conf"
-pidfile="/var/run/${name}/${name}.pid"
+appPid="/var/run/${name}/${name}.pid"
+managerPid="/var/run/${name}.manager.pid"
+logFile="/var/log/${name}.log"
 
 start_cmd="daemon_start"
 stop_cmd="daemon_stop"
@@ -44,28 +46,28 @@ daemon_prestart() {
 }
 
 daemon_start() {
-    /usr/sbin/daemon -P ${pidfile} -r -f -u $daemon_user $command
+    /usr/sbin/daemon -P ${managerPid} -p ${appPid} -r -f -S -o ${logFile} -u ${daemon_user} ${command}
 }
 
 daemon_stop() {
-    if [ -e "${pidfile}" ]; 
+    if [ -e "${managerPid}" ]; 
     then
-        kill -s TERM `cat ${pidfile}`
+        kill -s TERM `cat ${managerPid}`
     else
         echo "${name} is not running"
     fi
 }
 
 daemon_status() {
-    if [ -e "${pidfile}" ]; 
+    if [ -e "${appPid}" ]; 
     then
-        echo "${name} is running as pid `cat ${pidfile}`"
+        echo "${name} is running as pid `cat ${appPid}`, with daemon manager (pid `cat ${managerPid}`)"
     else
         echo "${name} is not running"
     fi
 }
 
 load_rc_config ${name}
-: ${rslsync_enable:="NO"}
+: ${rcvar:="NO"}
 
 run_rc_command "$1"
